@@ -52,3 +52,10 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'activeadmin'
+gem "font-awesome-rails"
+gem 'rails-assets-bulma', source: 'https://rails-assets.org'
+gem "slim-rails"
+gem 'pundit'
+gem 'aasm'
