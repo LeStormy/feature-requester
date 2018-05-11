@@ -59,3 +59,5 @@ gem 'rails-assets-bulma', source: 'https://rails-assets.org'
 gem "slim-rails"
 gem 'pundit'
 gem 'aasm'
+gem "devise"
+gem 'devise_invitable'
