@@ -10,6 +10,19 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
  *= require_self
  */
+
+@import "font-awesome";
+@import "bulma";
+
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+  box-shadow: 0 1px 2px 0px #aaa;
+}
+
+.navbar + .container {
+  padding-top: 72px;
+}
