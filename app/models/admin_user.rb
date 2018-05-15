@@ -4,4 +4,8 @@ class AdminUser < ApplicationRecord
   has_many :boards
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  def name
+    email
+  end
 end

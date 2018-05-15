@@ -61,3 +61,4 @@ gem 'pundit'
 gem 'aasm'
 gem "devise"
 gem 'devise_invitable'
+gem 'rails-assets-Wikiki--bulma-accordion', source: 'https://rails-assets.org'

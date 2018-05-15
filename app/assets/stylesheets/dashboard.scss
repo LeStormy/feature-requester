@@ -1,3 +1,38 @@
 // Place all the styles related to the dashboard controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#dashboard {
+  $sidebar-width: 300px;
+
+  display: flex;
+  .sidebar {
+    margin-top: 32px;
+    width: $sidebar-width;
+    position: fixed;
+    max-height: calc(100% - 92px);
+  }
+  .create-post-input {
+    flex: 1;
+    padding-left: $sidebar-width;
+  }
+  .posts {
+    margin-left: $sidebar-width;
+  }
+  .head-title {
+    margin-left: 1rem;
+  }
+  .to-right-side {
+    margin-right: 1rem;
+    margin-top: 0.75rem;
+  }
+  .active-card {
+    background-color: #209cee;
+  }
+  .footer-margins {
+    margin-left: 1rem;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,69 @@
+.nav.navbar role="navigation" aria-label="dropdown navigation"
+  .container
+    .navbar-brand
+      a.navbar-item href="/"
+        img src=image_url('logo.png')
+    .navbar-menu
+      .navbar-start
+        a.navbar-item
+          | Road Map
+        .field.navbar-item
+          .control
+            .select
+              select onchange="location = this.value;"
+                - @boards.each do |board|
+                  - if board.id == params[:id].to_i
+                    option value="/boards/#{board.id}" selected=""
+                      = @boards.find_by(id: board.id).title
+                  - else
+                    option value="/boards/#{board.id}"
+                      = @boards.find_by(id: board.id).title
+
+
+      .navbar-end
+        a.navbar-item
+          | Log Out
+
+.container
+  #dashboard
+    .sidebar
+      .column
+        .field
+          .control
+            input.input type="text" placeholder="Search"
+        .card.collapse-card
+          .card-header.collapse-card__heading
+            .card-header-title.collapse-card__title
+              = "Request a feature"
+          .card-content.collapse-card__body
+            .field
+              .label.label
+                = "Title"
+              .control
+                input.input type="text" placeholder="Title"
+            .field
+              .label.label
+                = "Description"
+              .control
+                textarea.textarea type="text" placeholder="Description"
+
+    .container.posts
+      .column
+        .head-title
+          h1.is-size-2
+            = - @boards.find_by(id: params[:id]).title
+      - if @posts.present?
+        - @posts.each do |post|
+          .column
+            .card
+              .card-header
+                .card-header-title
+                  p
+                    = post.title
+                p.to-right-side
+                  = - User.find_by(id: post.user_id).name
+              .card-content
+                = post.description
+              footer.card-footer
+                p.footer-margins
+                  | #{distance_of_time_in_words(Time.now, post.created_at)} ago
