@@ -1,3 +1,0 @@
-$(function () {
-    $(".collapse-card").paperCollapse();
-});

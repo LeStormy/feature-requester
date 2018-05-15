@@ -1,0 +1,85 @@
+.nav.navbar role="navigation" aria-label="dropdown navigation"
+  .container
+    .navbar-brand
+      a.navbar-item href="/"
+        img src=image_url('logo.png')
+    .navbar-menu
+      .navbar-start
+        a.navbar-item
+          | Road Map
+        .field.navbar-item
+          .control
+            .select
+              select onchange="location = this.value;"
+                - @boards.each do |board|
+                  - if board.id == @post.board_id
+                    option value="/boards/#{board.id}" selected=""
+                      = @boards.find_by(id: board.id).title
+                  - else
+                    option value="/boards/#{board.id}"
+                      = @boards.find_by(id: board.id).title
+
+
+      .navbar-end
+        a.navbar-item
+          | Log Out
+
+
+.container
+  #posts
+    .sidebar-in-post
+      .column
+        .is-size-5
+          | Upvoted by
+        br
+        ul
+          - @voters.each do |voter|
+            li
+              = voter
+
+    .container.posts
+      .column
+        .is-size-2
+          = @post.title
+        .header-row
+          span
+            .is-size-5
+              = @post.created_at.strftime("%B %d, %Y")
+          span
+            .is-size-6
+              = User.find_by(id: @post.user_id).name
+        hr
+        .head-desc
+          .is-size-4
+            = @post.short_description
+          br
+          p
+            = @post.description
+        hr
+        = form_for Comment.new do |f|
+          .field
+            = f.hidden_field :post_id, value: params[:id]
+          .field
+            = f.hidden_field :user_id, value: 3
+          .field
+            = f.label :leave_a_comment, class: "label"
+          .comment-field-row
+            .control
+              = f.text_area :message, class: "textarea"
+            .field style="text-align: right;"
+              = f.submit "Send", class: "button", style: "padding-right: 4rem; padding-left: 4rem;"
+        hr
+      - if true
+        - @comments.each do |comment|
+          .column
+            .card
+              .card-content
+                = comment.message
+              footer.card-footer
+                .header-row
+                  span
+                    p.footer-margins
+                      | #{distance_of_time_in_words(Time.now, comment.created_at)} ago
+                  span
+                    p.footer-margins
+                      = @users[comment.user_id]

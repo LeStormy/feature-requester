@@ -1,3 +1,8 @@
+javascript:
+  $(function () {
+    $(".collapse-card").paperCollapse();
+  });
+
 .nav.navbar role="navigation" aria-label="dropdown navigation"
   .container
     .navbar-brand
@@ -31,21 +36,30 @@
         .field
           .control
             input.input type="text" placeholder="Search"
-        .card.collapse-card
+        .card.collapse-card.starter
           .card-header.collapse-card__heading
             .card-header-title.collapse-card__title
               = "Request a feature"
           .card-content.collapse-card__body
-            .field
-              .label.label
-                = "Title"
-              .control
-                input.input type="text" placeholder="Title"
-            .field
-              .label.label
-                = "Description"
-              .control
-                textarea.textarea type="text" placeholder="Description"
+            = form_for Post.new do |f|
+              .field
+                = f.hidden_field :board_id, value: params[:id]
+              .field
+                = f.hidden_field :user_id, value: 3
+              .field
+                = f.label :title, class: "label"
+                .control
+                  = f.text_field :title, class: "input"
+              .field
+                = f.label :summary, class: "label"
+                .control
+                  = f.text_field :short_description, class: "input"
+              .field
+                = f.label :description, class: "label"
+                .control
+                  = f.text_area :description, class: "textarea"
+              .field
+                = f.submit "Send", class: "button",  style:  "width:100%;"
 
     .container.posts
       .column
@@ -55,15 +69,16 @@
       - if @posts.present?
         - @posts.each do |post|
           .column
-            .card
-              .card-header
-                .card-header-title
-                  p
-                    = post.title
-                p.to-right-side
-                  = - User.find_by(id: post.user_id).name
-              .card-content
-                = post.description
-              footer.card-footer
-                p.footer-margins
-                  | #{distance_of_time_in_words(Time.now, post.created_at)} ago
+            a href="/posts/#{post.id}"
+              .card
+                .card-header
+                  .card-header-title
+                    p
+                      = post.title
+                  p.to-right-side
+                    = - User.find_by(id: post.user_id).name
+                .card-content
+                  = post.short_description
+                footer.card-footer
+                  p.footer-margins
+                    | #{distance_of_time_in_words(Time.now, post.created_at)} ago
