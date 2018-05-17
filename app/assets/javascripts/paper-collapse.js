@@ -14,9 +14,6 @@
     $.fn.paperCollapse = function(options) {
       var settings;
       settings = $.extend({}, $.fn.paperCollapse.defaults, options);
-      settings.onShow.call(this);
-      $(this).closest('.collapse-card').addClass('active');
-      $(this).closest('.collapse-card').find('.collapse-card__body').stop().slideDown(settings.animationDuration, settings.onShowComplete);
       $(this).find('.collapse-card__heading').add(settings.closeHandler).click(function() {
         if ($(this).closest('.collapse-card').hasClass('active')) {
           settings.onHide.call(this);

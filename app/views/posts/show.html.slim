@@ -29,6 +29,11 @@
   #posts
     .sidebar-in-post
       .column
+        a href="/boards/#{@post.board_id}"
+          = fa_icon "angle-left"
+          = "  Back"
+        br
+        hr style="width: 40%;"
         .is-size-5
           | Upvoted by
         br
@@ -75,11 +80,10 @@
             .card
               .card-content
                 = comment.message
-              footer.card-footer
-                .header-row
-                  span
-                    p.footer-margins
-                      | #{distance_of_time_in_words(Time.now, comment.created_at)} ago
-                  span
-                    p.footer-margins
-                      = @users[comment.user_id]
+              footer.card-footer.header-row
+                span
+                  p.footer-margins
+                    = @users[comment.user_id]
+                span
+                  p.footer-margins
+                    | #{distance_of_time_in_words(Time.now, comment.created_at)} ago

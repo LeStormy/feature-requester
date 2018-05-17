@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   resources :boards
   resources :posts
   resources :comments
+  resources :votes
 end

@@ -17,7 +17,7 @@ class PostsController < ApplicationController
   def show
     @boards = Board.all
     @post = Post.find_by(id: params[:id].to_i)
-    @voters = User.joins(:votes).where("votes.post_id = ?", 13).distinct.pluck(:name)
+    @voters = User.joins(:votes).where("votes.post_id = ?", params[:id]).distinct.pluck(:name)
     @comments = Comment.where(post_id: @post.id).order(created_at: :desc)
     @users = Hash[User.pluck(:id, :name)]
   end

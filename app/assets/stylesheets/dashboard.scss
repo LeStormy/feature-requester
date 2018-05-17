@@ -12,6 +12,11 @@
     position: fixed;
     max-height: calc(100% - 92px);
   }
+  .header-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
   .create-post-input {
     flex: 1;
     padding-left: $sidebar-width;
@@ -34,5 +39,17 @@
     margin-right: 0.5rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+  }
+  .card-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .upvote-card-padding {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 }
