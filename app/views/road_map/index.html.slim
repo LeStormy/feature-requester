@@ -1,0 +1,93 @@
+.nav.navbar role="navigation" aria-label="dropdown navigation"
+  .container
+    .navbar-brand
+      a.navbar-item href="/road_map"
+        img src=image_url('logo.png')
+    .navbar-menu
+      .navbar-start
+        a.navbar-item href="/road_map"
+          | Road Map
+        .field.navbar-item
+          .control
+            .select
+              select onchange="location = this.value;"
+                option disabled="" selected="" value=""
+                  | -- Boards --
+                - @boards.each do |id, board|
+                    option value="/boards/#{id}"
+                      = board
+
+
+      .navbar-end
+        a.navbar-item
+          | Log Out
+
+.container
+  #road_map
+    br
+    h1.is-size-1 style="padding-left: 100px;"
+      | Road Map
+    br
+    br
+    .columns
+      .column.is-4
+        p.centered-text.is-size-4
+          span.has-text-danger
+            = fa_icon("sticky-note")
+          span
+            = " Planned"
+      .column.is-4
+        p.centered-text.is-size-4
+          span.has-text-warning
+            = fa_icon("wrench")
+          span
+            = " In Progress"
+      .column.is-4
+        p.centered-text.is-size-4
+          span.has-text-primary
+            = fa_icon("check")
+          span
+            = " Completed"
+
+    hr
+    br
+    .columns
+      .column.is-4
+        .card
+          .card-content
+            ul
+              - @planned.each_with_index do |planned_post, i|
+                a.navbar-item href="/posts/#{planned_post.id}"
+                  li
+                    p.is-size-5
+                      = planned_post.title
+                    p.is-size-6
+                      = planned_post.short_description
+                - if i != @planned.length - 1
+                  hr
+      .column.is-4
+        .card
+          .card-content
+            ul
+              - @in_progress.each_with_index do |in_progress_post, i|
+                a.navbar-item href="/posts/#{in_progress_post.id}"
+                  li
+                    p.is-size-5
+                      = in_progress_post.title
+                    p.is-size-6
+                      = in_progress_post.short_description
+                - if i != @in_progress.length - 1
+                  hr
+      .column.is-4
+        .card
+          .card-content
+            ul
+              - @completed.each_with_index do |completed_post, i|
+                a.navbar-item href="/posts/#{completed_post.id}"
+                  li
+                    p.is-size-5
+                      = completed_post.title
+                    p.is-size-6
+                      = completed_post.short_description
+                - if i != @completed.length - 1
+                  hr

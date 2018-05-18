@@ -1,16 +1,18 @@
 .nav.navbar role="navigation" aria-label="dropdown navigation"
   .container
     .navbar-brand
-      a.navbar-item href="/"
+      a.navbar-item href="/road_map"
         img src=image_url('logo.png')
     .navbar-menu
       .navbar-start
-        a.navbar-item
+        a.navbar-item href="/road_map"
           | Road Map
         .field.navbar-item
           .control
             .select
               select onchange="location = this.value;"
+                option disabled="" value=""
+                  | -- Boards --
                 - @boards.each do |board|
                   - if board.id == @post.board_id
                     option value="/boards/#{board.id}" selected=""
@@ -45,7 +47,31 @@
     .container.posts
       .column
         .is-size-2
-          = @post.title
+          = "#{@post.title} "
+        - if @post.status == "completed"
+          span.tag.is-primary.is-size-5
+            = "COMPLETED"
+        - elsif @post.status == "in_progress"
+          span.tag.is-warning.is-size-5
+            = "IN PROGRESS"
+        - elsif @post.status == "planned"
+          span.tag.is-danger.is-size-5
+            = "PLANNED"
+
+        - if @current_user.status == "admin"
+          br
+          br
+          .columns
+            .column.is-3
+              .header-row
+                = button_to @post, params: {:new_value => "planned"}, method: :put, class: "tag is-danger is-size-6" do
+                  = "Planned"
+                = button_to @post, params: {:new_value => "in_progress"}, method: :put, class: "tag is-warning is-size-6" do
+                  = "In Progress"
+                = button_to @post, params: {:new_value => "completed"}, method: :put, class: "tag is-primary is-size-6" do
+                  = "Completed"
+
+
         .header-row
           span
             .is-size-5
@@ -65,12 +91,12 @@
           .field
             = f.hidden_field :post_id, value: params[:id]
           .field
-            = f.hidden_field :user_id, value: 3
+            = f.hidden_field :user_id, value: @current_user.id
           .field
             = f.label :leave_a_comment, class: "label"
           .comment-field-row
             .control
-              = f.text_area :message, class: "textarea"
+              = f.text_area :message, class: "textarea", required: true
             .field style="text-align: right;"
               = f.submit "Send", class: "button", style: "padding-right: 4rem; padding-left: 4rem;"
         hr
@@ -87,3 +113,7 @@
                 span
                   p.footer-margins
                     | #{distance_of_time_in_words(Time.now, comment.created_at)} ago
+                - if @current_user.status == "admin" || comment.user_id == @current_user.id
+                  span
+                    = button_to comment, method: :delete, class: "btn-link footer-margins" do
+                      = "Delete"

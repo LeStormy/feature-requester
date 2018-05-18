@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180515134330) do
+ActiveRecord::Schema.define(version: 20180517123046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,10 +49,8 @@ ActiveRecord::Schema.define(version: 20180515134330) do
   create_table "boards", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "admin_user_id"
     t.string "title"
     t.string "description"
-    t.index ["admin_user_id"], name: "index_boards_on_admin_user_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -73,6 +71,7 @@ ActiveRecord::Schema.define(version: 20180515134330) do
     t.bigint "board_id"
     t.bigint "user_id"
     t.string "short_description"
+    t.string "status"
     t.index ["board_id"], name: "index_posts_on_board_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
@@ -81,6 +80,7 @@ ActiveRecord::Schema.define(version: 20180515134330) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.string "status"
   end
 
   create_table "votes", force: :cascade do |t|

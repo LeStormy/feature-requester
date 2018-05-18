@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :posts
   resources :comments
   resources :votes
+  resources :road_map
 end

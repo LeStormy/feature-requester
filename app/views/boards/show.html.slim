@@ -1,16 +1,18 @@
 .nav.navbar role="navigation" aria-label="dropdown navigation"
   .container
     .navbar-brand
-      a.navbar-item href="/"
+      a.navbar-item href="/road_map"
         img src=image_url('logo.png')
     .navbar-menu
       .navbar-start
-        a.navbar-item
+        a.navbar-item href="/road_map"
           | Road Map
         .field.navbar-item
           .control
             .select
               select onchange="location = this.value;"
+                option disabled="" value=""
+                  | -- Boards --
                 - @boards.each do |id, board|
                   - if id == params[:id].to_i
                     option value="/boards/#{id}" selected=""
@@ -40,11 +42,11 @@
               .field
                 = f.hidden_field :board_id, value: params[:id]
               .field
-                = f.hidden_field :user_id, value: 3
+                = f.hidden_field :user_id, value: @current_user.id
               .field
                 = f.label :title, class: "label"
                 .control
-                  = f.text_field :title, class: "input"
+                  = f.text_field :title, class: "input", required: true
               .field
                 = f.label :summary, class: "label"
                 .control
@@ -67,12 +69,23 @@
             .column.is-11
               a href="/posts/#{post.id}"
                 .card
-                  .card-content.card-padding.header-row
-                    span
+                  .card-content.card-padding
+                    .header-row
                       p.is-size-5
-                        = post.title
-                      p.is-size-6
-                        = post.short_description
+                        span
+                          = "#{post.title} "
+                      - if post.status == "completed"
+                        span.tag.is-primary
+                          = "COMPLETED"
+                      - elsif post.status == "in_progress"
+                        span.tag.is-warning
+                          = "IN PROGRESS"
+                      - elsif post.status == "planned"
+                        span.tag.is-danger
+                          = "PLANNED"
+
+                    p.is-size-6
+                      = post.short_description
                   footer.card-footer.header-row
                     span
                       p.footer-margins
@@ -85,10 +98,18 @@
                 .field
                   = f.hidden_field :post_id, value: post.id
                 .field
-                  = f.hidden_field :user_id, value: 3
+                  = f.hidden_field :user_id, value: @current_user.id
                 .field
                   = button_tag(type: 'submit', class: "button is-size-2", id: 'validForm') do
                     .is-size-4 style="#{@voted_posts.include?(post.id) ? "color: #3273dc;" : ""}"
                       = fa_icon("thumbs-up")
                       br
                       = "#{@vote_count[post.id].present? ? "#{@vote_count[post.id]} " : "0 "} "
+
+      - else
+        br
+        br
+        br
+        br
+        p.has-text-grey style="text-align: center;"
+          | No feature requests here yet...
