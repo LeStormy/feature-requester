@@ -32,5 +32,10 @@ class PostsController < ApplicationController
     redirect_back fallback_location: boards_path
   end
 
+  def destroy
+    post = Post.find(params[:id])
+    post.destroy!
+    redirect_back fallback_location: boards_path
+  end
 
 end

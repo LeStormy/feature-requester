@@ -93,7 +93,8 @@
                     span
                       p.footer-margins
                         | #{distance_of_time_in_words(Time.now, post.created_at)} ago
-            .column
+
+            .column style="padding-top: 0px;"
               = form_for Vote.new do |f|
                 .field
                   = f.hidden_field :post_id, value: post.id
@@ -104,7 +105,12 @@
                     .is-size-4 style="#{@voted_posts.include?(post.id) ? "color: #3273dc;" : ""}"
                       = fa_icon("thumbs-up")
                       br
-                      = "#{@vote_count[post.id].present? ? "#{@vote_count[post.id]} " : "0 "} "
+                      = "#{@vote_count[post.id].present? ? "#{@vote_count[post.id]}" : "0"} "
+
+              span
+                - if @current_user.status == "admin"
+                  = button_to post, method: :delete, class: "button", style: "width:100%;" do
+                    = "Delete"
 
       - else
         br
