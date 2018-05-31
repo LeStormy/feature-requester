@@ -53,9 +53,9 @@ class PostsController < ApplicationController
   def complete
     post = Post.find(params[:post_id])
     if post.milestones.include?("Done!")
-      post.update!(status: 'in_progress')
+      post.update!(status: 'completed')
     else
-      post.update!(status: 'in_progress', milestones: post.milestones + [ "Done!"] )
+      post.update!(status: 'completed', milestones: post.milestones + [ "Done!"] )
     end
 
     redirect_back fallback_location: board_path(id: post.board_id)

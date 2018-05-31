@@ -6,7 +6,7 @@
       .column
         = render partial: "posts/title"
         .head-desc
-          .is-size-4.has-text-danger
+          .is-size-4
             = @post.short_description
           br
           = form_for @post, method: :put do |f|
