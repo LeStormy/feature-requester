@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     put :start
     put :plan
     put :complete
+    put :edit
   end
   resources :comments
   resources :votes

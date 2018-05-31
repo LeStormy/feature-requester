@@ -27,11 +27,27 @@ class PostsController < ApplicationController
 
   end
 
+  def edit
+    id =
+      if params[:id].present?
+        params[:id]
+      else
+        params[:post_id]
+      end
+    @current_user = User.find(3)
+    @boards = Board.all
+    @post = Post.find(id)
+    @voters = User.joins(:votes).where("votes.post_id = ?", id).distinct.pluck(:name)
+    @comments = Comment.where(post_id: @post.id).order(created_at: :desc)
+    @users = Hash[User.pluck(:id, :name)]
+    render 'edit'
+  end
+
   def update
     post = Post.find(params[:id])
-    post.update!(params.require(:post).permit(:status, milestones: []))
+    post.update!(params.require(:post).permit(:status, :description, milestones: []))
 
-    redirect_back fallback_location: boards_path
+    redirect_to post_path(id: params[:id])
   end
 
   def complete

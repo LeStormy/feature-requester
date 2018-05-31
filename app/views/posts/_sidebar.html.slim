@@ -1,0 +1,43 @@
+.sidebar-in-post
+  .column
+    a href="/boards/#{@post.board_id}"
+      = fa_icon "angle-left"
+      = "  Back"
+    br
+    hr style="width: 40%;"
+    .is-size-5
+      | Milestones
+    ul
+      .columns
+        .column.is-9
+          - if @current_user.present? && @current_user.status == "admin"
+            = form_for @post, method: :put do |f|
+              .field
+                = f.hidden_field :user_id, value: params[:id]
+                span
+                  .control
+                    - @post.milestones.each do |milestones|
+                      = hidden_field_tag "post[milestones][]", milestones
+                    = text_field_tag "post[milestones][]", "", class: "input", style: "width:100%;", required: true
+                span style="text-align:right;"
+                  .field style="margin:auto;"
+                    = button_tag(type: 'submit', class: "button", style: "width: 40%", id: 'validForm') do
+                      = "Add"
+      .columns
+        .column.is-9
+          - @post.milestones.each do |milestones|
+            li
+              = fa_icon "check"
+              = " #{milestones}"
+    br
+    hr style="width: 40%;"
+    .columns
+      .column.is-9
+        .is-size-5
+          | Upvoted by
+    ul
+    .columns
+      .column.is-9
+        - @voters.each do |voter|
+          li
+            = voter

@@ -1,6 +1,6 @@
 ActiveAdmin.register Board do
 
-  permit_params :title, :description, :admin_user_id
+  permit_params :title, :description
 
   index do
     selectable_column
@@ -16,7 +16,6 @@ ActiveAdmin.register Board do
     f.inputs "Board Details" do
       f.input :title
       f.input :description
-      f.input :admin_user
     end
 
     f.actions

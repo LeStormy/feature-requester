@@ -1,0 +1,43 @@
+.is-size-2
+  = "#{@post.title} "
+- if @post.status == "completed"
+  span.tag.is-primary.is-size-5
+    = "COMPLETED"
+- elsif @post.status == "in_progress"
+  span.tag.is-warning.is-size-5
+    = "IN PROGRESS"
+- elsif @post.status == "planned"
+  span.tag.is-danger.is-size-5
+    = "PLANNED"
+
+- if @current_user.present? && @current_user.status == "admin"
+  br
+  br
+  .columns
+    .column
+      .header-row
+        span.header-row
+          = button_to post_plan_path(post_id: @post.id), method: :put, class: "tag is-danger is-size-6", style: "margin-right: 5px; cursor: pointer;" do
+            = "Planned"
+          = button_to post_start_path(post_id: @post.id), method: :put, class: "tag is-warning is-size-6", style: "margin-right: 5px; cursor: pointer;" do
+            = "In Progress"
+          = button_to post_complete_path(post_id: @post.id), method: :put, class: "tag is-primary is-size-6",  style: "margin-right: 5px; cursor: pointer;" do
+            = "Completed"
+        span.header-row
+          - if @current_user.status == "admin"
+            = button_to post_edit_path(post_id: @post.id), method: :put, class: "tag has-background-white is-size-6", style: "margin-left: 5px; cursor: pointer;" do
+              = "Edit"
+            = button_to @post, method: :delete, class: "tag has-background-white is-size-6", style: "margin-left: 5px; cursor: pointer;" do
+              = "Delete"
+
+
+div
+  br
+.header-row
+  span
+    .is-size-5
+      = @post.created_at.strftime("%B %d, %Y")
+  span
+    .is-size-6
+      = User.find_by(id: @post.user_id).name
+hr

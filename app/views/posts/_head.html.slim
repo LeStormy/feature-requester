@@ -1,0 +1,27 @@
+.nav.navbar role="navigation" aria-label="dropdown navigation"
+  .container
+    .navbar-brand
+      a.navbar-item href="/road_map"
+        img src=image_url('logo.png')
+    .navbar-menu
+      .navbar-start
+        a.navbar-item href="/road_map"
+          | Road Map
+        .field.navbar-item
+          .control
+            .select
+              select onchange="location = this.value;"
+                option disabled="" value=""
+                  | -- Boards --
+                - @boards.each do |board|
+                  - if board.id == @post.board_id
+                    option value="/boards/#{board.id}" selected=""
+                      = @boards.find_by(id: board.id).title
+                  - else
+                    option value="/boards/#{board.id}"
+                      = @boards.find_by(id: board.id).title
+
+
+      .navbar-end
+        a.navbar-item
+          | Log Out

@@ -1,0 +1,16 @@
+- @comments.each do |comment|
+  .column
+    .card
+      .card-content
+        = comment.message
+      footer.card-footer.header-row
+        span
+          p.footer-margins
+            = @users[comment.user_id]
+        span
+          p.footer-margins
+            | #{distance_of_time_in_words(Time.now, comment.created_at)} ago
+        - if @current_user.present? && (@current_user.status == "admin" || comment.user_id == @current_user.id)
+          span
+            = button_to comment, method: :delete, class: "btn-link footer-margins" do
+              = "Delete"

@@ -1,0 +1,21 @@
+= render partial: "posts/head"
+.container
+  #posts
+    = render partial: "posts/sidebar"
+    .container.posts
+      .column
+        = render partial: "posts/title"
+        .head-desc
+          .is-size-4.has-text-danger
+            = @post.short_description
+          br
+          = form_for @post, method: :put do |f|
+            .field
+              = f.label :description, class: "label"
+              .control
+                = f.text_area :description, class: "textarea", value: @post.description
+            .field
+              = f.submit "Send", class: "button",  style:  "width:100%;"
+        hr
+
+      = render partial: "posts/comments"

@@ -1,0 +1,17 @@
+- if @current_user.present?
+  = form_for Comment.new do |f|
+    .field
+      = f.hidden_field :post_id, value: params[:id]
+    .field
+      = f.hidden_field :user_id, value: @current_user.id
+    .field
+      = f.label :leave_a_comment, class: "label"
+    .comment-field-row
+      .control
+        = f.text_area :message, class: "textarea", required: true
+      .field style="text-align: right;"
+        = f.submit "Send", class: "button", style: "padding-right: 4rem; padding-left: 4rem;"
+- else
+  p.is-size-6
+    | Login to leave a comment
+hr
