@@ -15,9 +15,9 @@ class PostsController < ApplicationController
   end
 
   def show
-    @current_user = User.find_by(id: 3)
+    @current_user = User.find(3)
     @boards = Board.all
-    @post = Post.find_by(id: params[:id].to_i)
+    @post = Post.find(params[:id])
     @voters = User.joins(:votes).where("votes.post_id = ?", params[:id]).distinct.pluck(:name)
     @comments = Comment.where(post_id: @post.id).order(created_at: :desc)
     @users = Hash[User.pluck(:id, :name)]
@@ -28,9 +28,39 @@ class PostsController < ApplicationController
   end
 
   def update
-    post_edit = Post.find(params[:id])
-    post_edit.update!(status: params[:new_value])
+    post = Post.find(params[:id])
+    post.update!(params.require(:post).permit(:status, milestones: []))
+
     redirect_back fallback_location: boards_path
+  end
+
+  def complete
+    post = Post.find(params[:post_id])
+    if post.milestones.include?("Done!")
+      post.update!(status: 'in_progress')
+    else
+      post.update!(status: 'in_progress', milestones: post.milestones + [ "Done!"] )
+    end
+
+    redirect_back fallback_location: board_path(id: post.board_id)
+  end
+
+  def plan
+    post = Post.find(params[:post_id])
+    post.update!(status: 'planned', milestones: post.milestones - ["Done!"])
+
+    redirect_back fallback_location: board_path(id: post.board_id)
+  end
+
+  def start
+    post = Post.find(params[:post_id])
+    if post.milestones.include?("Started")
+      post.update!(status: 'in_progress', milestones: post.milestones - ["Done!"])
+    else
+      post.update!(status: 'in_progress', milestones: post.milestones + [ "Started"] - ["Done!"] )
+    end
+
+    redirect_back fallback_location: board_path(id: post.board_id)
   end
 
   def destroy

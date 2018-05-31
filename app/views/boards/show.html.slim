@@ -38,27 +38,32 @@
             .card-header-title
               = "Request a feature"
           .card-content
-            = form_for Post.new do |f|
-              .field
-                = f.hidden_field :board_id, value: params[:id]
-              .field
-                = f.hidden_field :status, value: 'submitted'
-              .field
-                = f.hidden_field :user_id, value: @current_user.id
-              .field
-                = f.label :title, class: "label"
-                .control
-                  = f.text_field :title, class: "input", required: true
-              .field
-                = f.label :summary, class: "label"
-                .control
-                  = f.text_field :short_description, class: "input"
-              .field
-                = f.label :description, class: "label"
-                .control
-                  = f.text_area :description, class: "textarea"
-              .field
-                = f.submit "Send", class: "button",  style:  "width:100%;"
+            - if @current_user.present?
+              = form_for Post.new do |f|
+                .field
+                  = f.hidden_field :board_id, value: params[:id]
+                .field
+                  = f.hidden_field :status, value: 'submitted'
+                .field
+                  = f.hidden_field :user_id, value: @current_user.id
+                .field
+                  = f.label :title, class: "label"
+                  .control
+                    = f.text_field :title, class: "input", required: true
+                .field
+                  = f.label :summary, class: "label"
+                  .control
+                    = f.text_field :short_description, class: "input"
+                .field
+                  = f.label :description, class: "label"
+                  .control
+                    = f.text_area :description, class: "textarea"
+                .field
+                  = f.submit "Send", class: "button",  style:  "width:100%;"
+            - else
+              br
+              p.is-size-5
+                | Login to request a feature
 
     .container.posts
       .column
@@ -97,22 +102,31 @@
                         | #{distance_of_time_in_words(Time.now, post.created_at)} ago
 
             .column style="padding-top: 0px;"
-              = form_for Vote.new do |f|
+              - if @current_user.present?
+                = form_for Vote.new do |f|
+                  .field
+                    = f.hidden_field :post_id, value: post.id
+                  .field
+                    = f.hidden_field :user_id, value: @current_user.id
+                  .field
+                    = button_tag(type: 'submit', class: "button is-size-2", id: 'validForm') do
+                      .is-size-4 style="#{@voted_posts.include?(post.id) ? "color: #3273dc;" : ""}"
+                        = fa_icon("thumbs-up")
+                        br
+                        = "#{@vote_count[post.id].present? ? "#{@vote_count[post.id]}" : "0"} "
+                span
+                  - if @current_user.status == "admin"
+                    = button_to post, method: :delete, class: "button", style: "width:100%;" do
+                      = "Delete"
+              - else
                 .field
-                  = f.hidden_field :post_id, value: post.id
                 .field
-                  = f.hidden_field :user_id, value: @current_user.id
                 .field
-                  = button_tag(type: 'submit', class: "button is-size-2", id: 'validForm') do
-                    .is-size-4 style="#{@voted_posts.include?(post.id) ? "color: #3273dc;" : ""}"
+                  button.button.is-size-2
+                    .is-size-4
                       = fa_icon("thumbs-up")
                       br
                       = "#{@vote_count[post.id].present? ? "#{@vote_count[post.id]}" : "0"} "
-
-              span
-                - if @current_user.status == "admin"
-                  = button_to post, method: :delete, class: "button", style: "width:100%;" do
-                    = "Delete"
 
       - else
         br

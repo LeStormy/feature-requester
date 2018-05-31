@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   root to: "road_map#index"
 
   resources :boards
-  resources :posts
+  resources :posts do
+    put :start
+    put :plan
+    put :complete
+  end
   resources :comments
   resources :votes
   resources :road_map

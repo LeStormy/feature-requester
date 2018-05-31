@@ -37,6 +37,31 @@
         br
         hr style="width: 40%;"
         .is-size-5
+          | Milestones
+        br
+        ul
+          - if @current_user.present? && @current_user.status == "admin"
+            = form_for @post, method: :put do |f|
+              .field
+                = f.hidden_field :user_id, value: params[:id]
+              .header-row
+                span
+                  .control
+                    - @post.milestones.each do |milestones|
+                      = hidden_field_tag "post[milestones][]", milestones
+                    = text_field_tag "post[milestones][]", "", class: "input", required: true
+                span
+                  .field
+                    = button_tag(type: 'submit', class: "button", style: "width: 60px", id: 'validForm') do
+                      = "Add"
+          br
+          - @post.milestones.each do |milestones|
+            li
+              = fa_icon "check"
+              = " #{milestones}"
+        br
+        hr style="width: 40%;"
+        .is-size-5
           | Upvoted by
         br
         ul
@@ -58,17 +83,17 @@
           span.tag.is-danger.is-size-5
             = "PLANNED"
 
-        - if @current_user.status == "admin"
+        - if @current_user.present? && @current_user.status == "admin"
           br
           br
           .columns
             .column.is-3
               .header-row
-                = button_to @post, params: {:new_value => "planned"}, method: :put, class: "tag is-danger is-size-6", style: "margin-right: 5px; cursor: pointer;" do
+                = button_to post_plan_path(post_id: @post.id), method: :put, class: "tag is-danger is-size-6", style: "margin-right: 5px; cursor: pointer;" do
                   = "Planned"
-                = button_to @post, params: {:new_value => "in_progress"}, method: :put, class: "tag is-warning is-size-6", style: "margin-right: 5px; cursor: pointer;" do
+                = button_to post_start_path(post_id: @post.id), method: :put, class: "tag is-warning is-size-6", style: "margin-right: 5px; cursor: pointer;" do
                   = "In Progress"
-                = button_to @post, params: {:new_value => "completed"}, method: :put, class: "tag is-primary is-size-6",  style: "margin-right: 5px; cursor: pointer;" do
+                = button_to post_complete_path(post_id: @post.id), method: :put, class: "tag is-primary is-size-6",  style: "margin-right: 5px; cursor: pointer;" do
                   = "Completed"
             .column.is-8
             .column.is-1
@@ -94,18 +119,22 @@
           p
             = @post.description
         hr
-        = form_for Comment.new do |f|
-          .field
-            = f.hidden_field :post_id, value: params[:id]
-          .field
-            = f.hidden_field :user_id, value: @current_user.id
-          .field
-            = f.label :leave_a_comment, class: "label"
-          .comment-field-row
-            .control
-              = f.text_area :message, class: "textarea", required: true
-            .field style="text-align: right;"
-              = f.submit "Send", class: "button", style: "padding-right: 4rem; padding-left: 4rem;"
+        - if @current_user.present?
+          = form_for Comment.new do |f|
+            .field
+              = f.hidden_field :post_id, value: params[:id]
+            .field
+              = f.hidden_field :user_id, value: @current_user.id
+            .field
+              = f.label :leave_a_comment, class: "label"
+            .comment-field-row
+              .control
+                = f.text_area :message, class: "textarea", required: true
+              .field style="text-align: right;"
+                = f.submit "Send", class: "button", style: "padding-right: 4rem; padding-left: 4rem;"
+        - else
+          p.is-size-6
+            | Login to leave a comment
         hr
       - if true
         - @comments.each do |comment|
@@ -120,7 +149,7 @@
                 span
                   p.footer-margins
                     | #{distance_of_time_in_words(Time.now, comment.created_at)} ago
-                - if @current_user.status == "admin" || comment.user_id == @current_user.id
+                - if @current_user.present? && (@current_user.status == "admin" || comment.user_id == @current_user.id)
                   span
                     = button_to comment, method: :delete, class: "btn-link footer-margins" do
                       = "Delete"
