@@ -59,8 +59,12 @@
               - @planned.each_with_index do |planned_post, i|
                 a.navbar-item href="/posts/#{planned_post.id}"
                   li
-                    p.is-size-5
-                      = planned_post.title
+                    div
+                      span.is-size-5.is-uppercase.has-text-weight-bold
+                          = Board.find(planned_post.board_id).title
+                      span.is-size-5
+                          = " - "
+                          = planned_post.title
                     p.is-size-6
                       = planned_post.short_description
                 - if i != @planned.length - 1
@@ -72,8 +76,12 @@
               - @in_progress.each_with_index do |in_progress_post, i|
                 a.navbar-item href="/posts/#{in_progress_post.id}"
                   li
-                    p.is-size-5
-                      = in_progress_post.title
+                    div
+                      span.is-size-5.is-uppercase.has-text-weight-bold
+                          = Board.find(in_progress_post.board_id).title
+                      span.is-size-5
+                          = " - "
+                          = in_progress_post.title
                     p.is-size-6
                       = in_progress_post.short_description
                 - if i != @in_progress.length - 1
@@ -85,8 +93,12 @@
               - @completed.each_with_index do |completed_post, i|
                 a.navbar-item href="/posts/#{completed_post.id}"
                   li
-                    p.is-size-5
-                      = completed_post.title
+                    div
+                      span.is-size-5.is-uppercase.has-text-weight-bold
+                          = Board.find(completed_post.board_id).title
+                      span.is-size-5
+                          = " - "
+                          = completed_post.title
                     p.is-size-6
                       = completed_post.short_description
                 - if i != @completed.length - 1

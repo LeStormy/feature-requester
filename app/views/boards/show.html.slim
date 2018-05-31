@@ -42,6 +42,8 @@
               .field
                 = f.hidden_field :board_id, value: params[:id]
               .field
+                = f.hidden_field :status, value: 'submitted'
+              .field
                 = f.hidden_field :user_id, value: @current_user.id
               .field
                 = f.label :title, class: "label"

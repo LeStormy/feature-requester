@@ -15,4 +15,11 @@
   .planned {
     color: #00ff00;
   }
+
+  .header-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
 }

@@ -64,12 +64,19 @@
           .columns
             .column.is-3
               .header-row
-                = button_to @post, params: {:new_value => "planned"}, method: :put, class: "tag is-danger is-size-6" do
+                = button_to @post, params: {:new_value => "planned"}, method: :put, class: "tag is-danger is-size-6", style: "margin-right: 5px; cursor: pointer;" do
                   = "Planned"
-                = button_to @post, params: {:new_value => "in_progress"}, method: :put, class: "tag is-warning is-size-6" do
+                = button_to @post, params: {:new_value => "in_progress"}, method: :put, class: "tag is-warning is-size-6", style: "margin-right: 5px; cursor: pointer;" do
                   = "In Progress"
-                = button_to @post, params: {:new_value => "completed"}, method: :put, class: "tag is-primary is-size-6" do
+                = button_to @post, params: {:new_value => "completed"}, method: :put, class: "tag is-primary is-size-6",  style: "margin-right: 5px; cursor: pointer;" do
                   = "Completed"
+            .column.is-8
+            .column.is-1
+              .header-row
+                - if @current_user.status == "admin"
+                  = button_to @post, method: :delete, class: "tag has-background-white is-size-6", style: "cursor: pointer;" do
+                    = "Delete"
+
 
 
         .header-row

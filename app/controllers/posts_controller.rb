@@ -5,6 +5,7 @@ class PostsController < ApplicationController
      :title,
      :short_description,
      :description,
+     :status,
      :board_id,
      :user_id
     ]))
@@ -34,8 +35,9 @@ class PostsController < ApplicationController
 
   def destroy
     post = Post.find(params[:id])
+    board = post.board_id
     post.destroy!
-    redirect_back fallback_location: boards_path
+    redirect_to board_url(id: board)
   end
 
 end
