@@ -2,7 +2,10 @@ class BoardsController < ApplicationController
   before_action :set_current_user
   def show
     @boards = Hash[Board.all.pluck(:id, :title)]
-    @posts = Board.find(params[:id]).posts.where.not("posts.status = (?)", "completed").order(:status, created_at: :desc)
+    @posts = Board.find(params[:id]).posts
+      .where.not("posts.status = (?)", "completed")
+      .where("posts.title LIKE ? OR posts.short_description LIKE ?", "%#{params["search"]}%", "%#{params["search"]}%")
+      .order(:status, created_at: :desc)
     @users = Hash[User.pluck(:id, :name)]
     all_voted_posts = Vote.distinct.pluck(:post_id)
     @vote_count = {}

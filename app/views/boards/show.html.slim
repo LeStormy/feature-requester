@@ -21,7 +21,6 @@
                     option value="/boards/#{id}"
                       = board
 
-
       = render partial: "layouts/nav"
 
 .container
@@ -30,7 +29,15 @@
       .column
         .field
           .control
-            input.input type="text" placeholder="Search"
+            div.header-row
+              form.header-row
+                div style="display:flex;align-items:center;"
+                  = text_field_tag :search, params[:search], method: :post, class: "input", placeholder: "Search"
+                  | &nbsp;&nbsp;
+              form.header-row
+                div style="display:flex;align-items:center;"
+                  = button_to 'ok', method: :get, class: "button", params: {search: ""} do
+                    = fa_icon "times"
         .card
           .card-header
             .card-header-title
@@ -130,10 +137,19 @@
               - if @current_user.present? && @current_user.status == "admin"
                 = button_to post, method: :delete, class: "button", style: "width:100%;", data: { confirm: 'Are you sure?' } do
                   = "Delete"
-      - else
+
+      - elsif Post.count == 0
         br
         br
         br
         br
         p.has-text-grey style="text-align: center;"
           | No feature requests here yet...
+
+      - else
+        br
+        br
+        br
+        br
+        p.has-text-grey style="text-align: center;"
+          | No match found...

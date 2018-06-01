@@ -46,6 +46,13 @@ class PostsController < ApplicationController
     render 'edit'
   end
 
+  def remove_milestone
+    post = Post.find(params[:post_id])
+    post.update!(milestones: post.milestones - [params[:milestone]])
+
+    redirect_back fallback_location: board_path(id: post.board_id)
+  end
+
   def update
     post = Post.find(params[:id])
     post.update!(params.require(:post).permit(:status, :description, milestones: []))

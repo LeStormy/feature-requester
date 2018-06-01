@@ -16,10 +16,10 @@
                 - @boards.each do |board|
                   - if board.id == @post.board_id
                     option value="/boards/#{board.id}" selected=""
-                      = @boards.find_by(id: board.id).title
+                      = @boards.find(board.id).title
                   - else
                     option value="/boards/#{board.id}"
-                      = @boards.find_by(id: board.id).title
+                      = @boards.find(board.id).title
 
 
       = render partial: "layouts/nav"

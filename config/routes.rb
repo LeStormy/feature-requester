@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     put :start
     put :plan
     put :complete
+    put :remove_milestone
     put :edit
   end
   resources :comments
@@ -17,4 +18,5 @@ Rails.application.routes.draw do
   delete :unset_current_user, to: "application#unset_current_user"
 
   get :slack_redirect, to: "application#slack_redirect"
+
 end
