@@ -5,8 +5,6 @@
         img src=image_url('logo.png')
     .navbar-menu
       .navbar-start
-        a.navbar-item href="/road_map"
-          | Road Map
         .field.navbar-item
           .control
             .select
@@ -71,15 +69,11 @@
                 | Login to request a feature
 
     .container.posts
-      .column
-        .head-title
-          h1.is-size-2
-            = @boards[params[:id].to_i]
       - if @posts.present?
         - @posts.each do |post|
           .columns
             .column.is-11
-              a href="/posts/#{post.id}"
+              = link_to post_path(post) do
                 .card
                   .card-content.card-padding
                     .header-row
@@ -87,26 +81,26 @@
                         span
                           = "#{post.title} "
                       - if post.status == "completed"
-                        span.tag.is-primary
+                        span.tag style="background-color: #{state_color(:completed)}"
                           = "COMPLETED"
                       - elsif post.status == "in_progress"
-                        span.tag.is-warning
+                        span.tag style="background-color: #{state_color(:in_progress)}"
                           = "IN PROGRESS"
                       - elsif post.status == "planned"
-                        span.tag.is-danger
+                        span.tag style="background-color: #{state_color(:planned)}"
                           = "PLANNED"
 
                     p.is-size-6
                       = post.short_description
-                  footer.card-footer.header-row
-                    span
-                      div style="display:flex;align-items:center;"
-                        img src="#{User.find(post.user_id).thumbnail}"
-                        p.footer-margins
-                          = @users[post.user_id]
-                    span
-                      div
-                        p.footer-margins
+                  .card-content
+                    .media
+                      .media-left
+                        figure.image.is-48x48
+                          = image_tag post.user.profile_picture
+                      .media-content
+                        p.title.is-5
+                          = post.user.name
+                        p.subtitle.is-6
                           | #{distance_of_time_in_words(Time.now, post.created_at)} ago
 
             .column style="padding-top: 0px;"
