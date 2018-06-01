@@ -1,0 +1,12 @@
+.navbar-end
+  - if @current_user.present?
+    .navbar-item
+      img src="#{@current_user.profile_picture}"
+    .navbar-item
+      = @current_user.name
+    .navbar-item
+      = link_to "Logout", unset_current_user_path, method: :delete, class: "button"
+  - else
+    .navbar-item
+      a href="https://slack.com/oauth/authorize?scope=identity.basic+identity.avatar&client_id=#{ENV['SLACK_CLIENT_ID']}&redirect_uri=#{slack_redirect_url}"
+        img src="https://api.slack.com/img/sign_in_with_slack.png"

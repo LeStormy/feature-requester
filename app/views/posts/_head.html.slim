@@ -22,6 +22,4 @@
                       = @boards.find_by(id: board.id).title
 
 
-      .navbar-end
-        a.navbar-item
-          | Log Out
+      = render partial: "layouts/nav"

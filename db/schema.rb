@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_31_121115) do
+ActiveRecord::Schema.define(version: 2018_06_01_120501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,9 @@ ActiveRecord::Schema.define(version: 2018_05_31_121115) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "status"
+    t.string "slack_id"
+    t.string "profile_picture"
+    t.string "thumbnail"
   end
 
   create_table "votes", force: :cascade do |t|

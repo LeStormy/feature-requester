@@ -5,8 +5,10 @@
         = comment.message
       footer.card-footer.header-row
         span
-          p.footer-margins
-            = @users[comment.user_id]
+          div style="display:flex;align-items:center;"
+            img src="#{@thumbnails[comment.user_id]}"
+            p.footer-margins
+              = @users[comment.user_id]
         span
           p.footer-margins
             | #{distance_of_time_in_words(Time.now, comment.created_at)} ago

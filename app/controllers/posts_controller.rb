@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  before_action :set_current_user
+
   def create
     post = Post.new
     post.assign_attributes(params.require(:post).permit([
@@ -11,16 +13,17 @@ class PostsController < ApplicationController
     ]))
 #    authorize post
     post.save!
+    Vote.create!(user_id: params[:post][:user_id], post_id: post.id)
     redirect_back fallback_location: boards_path
   end
 
   def show
-    @current_user = User.find(3)
     @boards = Board.all
     @post = Post.find(params[:id])
-    @voters = User.joins(:votes).where("votes.post_id = ?", params[:id]).distinct.pluck(:name)
+    @voters = User.joins(:votes).where("votes.post_id = ?", params[:id]).distinct.pluck(:name, :thumbnail)
     @comments = Comment.where(post_id: @post.id).order(created_at: :desc)
     @users = Hash[User.pluck(:id, :name)]
+    @thumbnails = Hash[User.pluck(:id, :thumbnail)]
   end
 
   def new
@@ -34,7 +37,6 @@ class PostsController < ApplicationController
       else
         params[:post_id]
       end
-    @current_user = User.find(3)
     @boards = Board.all
     @post = Post.find(id)
     @voters = User.joins(:votes).where("votes.post_id = ?", id).distinct.pluck(:name)

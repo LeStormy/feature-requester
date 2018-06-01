@@ -37,6 +37,8 @@ div style="display:flex;align-items:center;"
     .is-size-5
       = @post.created_at.strftime("%B %d, %Y")
   span
-    .is-size-6
-      = User.find_by(id: @post.user_id).name
+    div.header-row style="display:flex;align-items:center;"
+      img src="#{User.find(@post.user_id).thumbnail}"
+      .is-size-6
+        | &nbsp;&nbsp;#{User.find(@post.user_id).name}
 hr

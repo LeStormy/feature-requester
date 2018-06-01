@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :user
-  devise_for :admin_users, ActiveAdmin::Devise.config
+  devise_for :admin_users
   ActiveAdmin.routes(self)
   root to: "road_map#index"
 
@@ -14,4 +13,8 @@ Rails.application.routes.draw do
   resources :comments
   resources :votes
   resources :road_map
+
+  delete :unset_current_user, to: "application#unset_current_user"
+
+  get :slack_redirect, to: "application#slack_redirect"
 end

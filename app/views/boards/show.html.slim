@@ -22,9 +22,7 @@
                       = board
 
 
-      .navbar-end
-        a.navbar-item
-          | Log Out
+      = render partial: "layouts/nav"
 
 .container
   #dashboard
@@ -95,30 +93,31 @@
                       = post.short_description
                   footer.card-footer.header-row
                     span
-                      p.footer-margins
-                        = @users[post.user_id]
+                      div style="display:flex;align-items:center;"
+                        img src="#{User.find(post.user_id).thumbnail}"
+                        p.footer-margins
+                          = @users[post.user_id]
                     span
-                      p.footer-margins
-                        | #{distance_of_time_in_words(Time.now, post.created_at)} ago
+                      div
+                        p.footer-margins
+                          | #{distance_of_time_in_words(Time.now, post.created_at)} ago
 
             .column style="padding-top: 0px;"
               - if @current_user.present?
-                = form_for Vote.new do |f|
-                  .field
-                    = f.hidden_field :post_id, value: post.id
-                  .field
-                    = f.hidden_field :user_id, value: @current_user.id
-                  .field
-                    = button_tag(type: 'submit', class: "button is-size-2", id: 'validForm') do
-                      .is-size-4 style="#{@voted_posts.include?(post.id) ? "color: #3273dc;" : ""}"
-                        = fa_icon("thumbs-up")
-                        br
-                        = "#{@vote_count[post.id].present? ? "#{@vote_count[post.id]}" : "0"} "
-                span
-                  - if @current_user.status == "admin"
-                    = button_to post, method: :delete, class: "button", style: "width:100%;" do
-                      = "Delete"
-              - else
+                - if @current_user.id != post.user_id
+                  = form_for Vote.new do |f|
+                    .field
+                      = f.hidden_field :post_id, value: post.id
+                    .field
+                      = f.hidden_field :user_id, value: @current_user.id
+                    .field
+                      = button_tag(type: 'submit', class: "button is-size-2", id: 'validForm') do
+                        .is-size-4 style="#{@voted_posts.include?(post.id) ? "color: #3273dc;" : ""}"
+                          = fa_icon("thumbs-up")
+                          br
+                          = "#{@vote_count[post.id].present? ? "#{@vote_count[post.id]}" : "0"} "
+
+              - if (!@current_user.present? || @current_user.id == post.user_id)
                 .field
                 .field
                 .field
@@ -128,6 +127,9 @@
                       br
                       = "#{@vote_count[post.id].present? ? "#{@vote_count[post.id]}" : "0"} "
 
+              - if @current_user.present? && @current_user.status == "admin"
+                = button_to post, method: :delete, class: "button", style: "width:100%;" do
+                  = "Delete"
       - else
         br
         br

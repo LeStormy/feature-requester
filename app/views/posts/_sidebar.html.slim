@@ -39,5 +39,7 @@
     .columns
       .column.is-9
         - @voters.each do |voter|
-          li
-            = voter
+            div style="display:flex;align-items:center;"
+              img src="#{voter[1]}"
+              p
+                | &nbsp;&nbsp;#{voter[0]}
