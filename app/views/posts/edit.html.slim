@@ -16,6 +16,9 @@
                 = f.text_area :description, class: "textarea", value: @post.description
             .field
               = f.submit "Send", class: "button",  style:  "width:100%;"
+            .field
+              = button_to @post, method: :get, class: "button", style: "width:100%;" do
+                = "Cancel"
         hr
 
       = render partial: "posts/comments"

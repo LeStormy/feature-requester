@@ -28,7 +28,7 @@ div style="display:flex;align-items:center;"
           - if @current_user.status == "admin"
             = button_to post_edit_path(post_id: @post.id), method: :put, class: "button has-background-white is-size-6", style: "margin-left: 5px; cursor: pointer;" do
               = "Edit"
-            = button_to @post, method: :delete, class: "button has-background-white is-size-6", style: "margin-left: 5px; cursor: pointer;" do
+            = button_to @post, method: :delete, class: "button has-background-white is-size-6", style: "margin-left: 5px; cursor: pointer;", data: { confirm: 'Are you sure?' } do
               = "Delete"
 
 

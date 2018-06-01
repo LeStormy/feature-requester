@@ -39,9 +39,10 @@ class PostsController < ApplicationController
       end
     @boards = Board.all
     @post = Post.find(id)
-    @voters = User.joins(:votes).where("votes.post_id = ?", id).distinct.pluck(:name)
+    @voters = User.joins(:votes).where("votes.post_id = ?", id).distinct.pluck(:name, :thumbnail)
     @comments = Comment.where(post_id: @post.id).order(created_at: :desc)
     @users = Hash[User.pluck(:id, :name)]
+    @thumbnails = Hash[User.pluck(:id, :thumbnail)]
     render 'edit'
   end
 
