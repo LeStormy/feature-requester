@@ -13,17 +13,14 @@ div style="display:flex;align-items:center;"
       = "PLANNED"
 
 - if @current_user.present? && @current_user.status == "admin"
-  br
   .columns
     .column
       .header-row
         span.header-row
-          = button_to post_plan_path(post_id: @post.id), method: :put, class: "button is-danger is-size-6", style: "margin-right: 5px; cursor: pointer;" do
-            = "Planned"
-          = button_to post_start_path(post_id: @post.id), method: :put, class: "button is-warning is-size-6", style: "margin-right: 5px; cursor: pointer;" do
-            = "In Progress"
-          = button_to post_complete_path(post_id: @post.id), method: :put, class: "button is-primary is-size-6",  style: "margin-right: 5px; cursor: pointer;" do
-            = "Completed"
+          - { planned: :plan, in_progress: :start, completed: :complete }.each do |state, action|
+            = button_to send("post_#{action}_path", post_id: @post.id), method: :put, class: "button is-size-6", style: "background-color: #{state_color(state)}" do
+              = t("states.#{state}")
+
         span.header-row
           - if @current_user.status == "admin"
             = button_to post_edit_path(post_id: @post.id), method: :put, class: "button has-background-white is-size-6", style: "margin-left: 5px; cursor: pointer;" do

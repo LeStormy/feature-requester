@@ -7,10 +7,12 @@
 
   display: flex;
   .sidebar {
-    margin-top: 32px;
     width: $sidebar-width;
     position: fixed;
     max-height: calc(100% - 92px);
+    & > .column {
+      padding-top: 0;
+    }
   }
   .header-row {
     display: flex;

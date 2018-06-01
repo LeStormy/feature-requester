@@ -1,104 +1,43 @@
 .nav.navbar role="navigation" aria-label="dropdown navigation"
   .container
     .navbar-brand
-      a.navbar-item href="/road_map"
-        img src=image_url('logo.png')
+      = link_to root_path, class: 'navbar-item' do
+        = image_tag 'logo.png'
     .navbar-menu
       .navbar-start
-        a.navbar-item href="/road_map"
-          | Road Map
         .field.navbar-item
           .control
             .select
               select onchange="location = this.value;"
                 option disabled="" selected="" value=""
                   | -- Boards --
-                - @boards.each do |id, board|
-                    option value="/boards/#{id}"
-                      = board
-
+                - @boards.each do |board|
+                    option value=board_path(board)
+                      = board.title
 
       = render partial: "layouts/nav"
 
-
 .container
-  #road_map
-    br
-    h1.is-size-1 style="padding-left: 100px;"
-      | Road Map
-    br
-    br
-    .columns
+  .columns
+    - [ :planned, :in_progress, :completed ].each do |state|
       .column.is-4
-        p.centered-text.is-size-4
-          span.has-text-danger
-            = fa_icon("sticky-note")
+        .has-text-centered.is-size-4
+          span style="color: #{state_color(state)}"
+            = fa_icon state_icon(state)
           span
-            = " Planned"
-      .column.is-4
-        p.centered-text.is-size-4
-          span.has-text-warning
-            = fa_icon("wrench")
-          span
-            = " In Progress"
-      .column.is-4
-        p.centered-text.is-size-4
-          span.has-text-primary
-            = fa_icon("check")
-          span
-            = " Completed"
+            = t("states.#{state}")
 
-    hr
-    br
-    .columns
-      .column.is-4
         .card
           .card-content
             ul
-              - @planned.each_with_index do |planned_post, i|
-                a.navbar-item href="/posts/#{planned_post.id}"
+              - Post.where(status: state).includes(:board).each do |post|
+                = link_to post_path(post), class: 'navbar-item'
                   li
                     div
                       span.is-size-5.is-uppercase.has-text-weight-bold
-                          = Board.find(planned_post.board_id).title
+                          = post.board.title
                       span.is-size-5
                           = " - "
-                          = planned_post.title
+                          = post.title
                     p.is-size-6
-                      = planned_post.short_description
-                - if i != @planned.length - 1
-                  hr
-      .column.is-4
-        .card
-          .card-content
-            ul
-              - @in_progress.each_with_index do |in_progress_post, i|
-                a.navbar-item href="/posts/#{in_progress_post.id}"
-                  li
-                    div
-                      span.is-size-5.is-uppercase.has-text-weight-bold
-                          = Board.find(in_progress_post.board_id).title
-                      span.is-size-5
-                          = " - "
-                          = in_progress_post.title
-                    p.is-size-6
-                      = in_progress_post.short_description
-                - if i != @in_progress.length - 1
-                  hr
-      .column.is-4
-        .card
-          .card-content
-            ul
-              - @completed.each_with_index do |completed_post, i|
-                a.navbar-item href="/posts/#{completed_post.id}"
-                  li
-                    div
-                      span.is-size-5.is-uppercase.has-text-weight-bold
-                          = Board.find(completed_post.board_id).title
-                      span.is-size-5
-                          = " - "
-                          = completed_post.title
-                    p.is-size-6
-                      = completed_post.short_description
-                - if i != @completed.length - 1
-                  hr
+                      = post.short_description
